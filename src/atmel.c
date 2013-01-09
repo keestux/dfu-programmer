@@ -93,7 +93,7 @@ static int32_t atmel_read_command( dfu_device_t *device,
         uint8_t command[4] = { 0x06, 0x03, 0x00, data0 };
 
         if( 4 != dfu_download(device, 4, command) ) {
-            DEBUG( "dfu_download failed.\n" );
+            DEBUG( "dfu_download failed (select memory unit).\n" );
             return -1;
         }
 
@@ -117,7 +117,7 @@ static int32_t atmel_read_command( dfu_device_t *device,
         TRACE( "%s( %p, 0x%02x, 0x%02x )\n", __FUNCTION__, device, data0, data1 );
 
         if( 3 != dfu_download(device, 3, command) ) {
-            DEBUG( "dfu_download failed\n" );
+            DEBUG( "dfu_download failed (select memory unit)\n" );
             return -1;
         }
 
@@ -208,7 +208,8 @@ int32_t atmel_read_config( dfu_device_t *device,
 
     /* These commands are documented in Appendix A of the
      * "AT89C5131A USB Bootloader Datasheet" or
-     * "AT90usb128x/AT90usb64x USB DFU Bootloader Datasheet"
+     * "AT90usb128x/AT90usb64x USB DFU Bootloader Datasheet" or
+     * "Atmel AVR4023: FLIP USB DFU Protocol" (04 => BOOTLOADER, 05 => SIGNATURE)
      */
     static const atmel_read_config_t data[] = {
         { 0x00, 0x00, (DM_8051 | DM_AVR), offsetof(atmel_device_info_t, bootloaderVersion) },
@@ -307,7 +308,7 @@ int32_t atmel_erase_flash( dfu_device_t *device,
     }
 
     if( 3 != dfu_download(device, 3, command) ) {
-        DEBUG( "dfu_download failed\n" );
+        DEBUG( "dfu_download failed (erase flash)\n" );
         return -2;
     }
 
@@ -483,7 +484,7 @@ int32_t atmel_set_config( dfu_device_t *device,
     command[3] = value;
 
     if( 4 != dfu_download(device, 4, command) ) {
-        DEBUG( "dfu_download failed\n" );
+        DEBUG( "dfu_download failed (set config)\n" );
         return -2;
     }
 
@@ -530,7 +531,7 @@ static int32_t __atmel_read_page( dfu_device_t *device,
         command[5] = 0xff & (current_start + size - 1);
 
         if( 6 != dfu_download(device, 6, command) ) {
-            DEBUG( "dfu_download failed\n" );
+            DEBUG( "dfu_download failed (read page)\n" );
             return -1;
         }
 
@@ -656,7 +657,7 @@ static int32_t __atmel_blank_check_internal( dfu_device_t *device,
     command[5] = 0xff & end;
 
     if( 6 != dfu_download(device, 6, command) ) {
-        DEBUG( "dfu_download failed.\n" );
+        DEBUG( "dfu_download failed (blank check internal)\n" );
         return -2;
     }
 
@@ -757,12 +758,12 @@ int32_t atmel_reset( dfu_device_t *device )
     TRACE( "%s( %p )\n", __FUNCTION__, device );
 
     if( 3 != dfu_download(device, 3, command) ) {
-        DEBUG( "dfu_download failed.\n" );
+        DEBUG( "dfu_download failed (reset)\n" );
         return -1;
     }
 
     if( 0 != dfu_download(device, 0, NULL) ) {
-        DEBUG( "dfu_download failed.\n" );
+        DEBUG( "dfu_download failed (reset?)\n" );
         return -2;
     }
 
@@ -780,12 +781,12 @@ int32_t atmel_start_app( dfu_device_t *device )
     TRACE( "%s( %p )\n", __FUNCTION__, device );
 
     if( 5 != dfu_download(device, 5, command) ) {
-        DEBUG( "dfu_download failed.\n" );
+        DEBUG( "dfu_download failed (start app)\n" );
         return -1;
     }
 
     if( 0 != dfu_download(device, 0, NULL) ) {
-        DEBUG( "dfu_download failed.\n" );
+        DEBUG( "dfu_download failed (start app?)\n" );
         return -2;
     }
 
@@ -801,7 +802,7 @@ static int32_t atmel_select_flash( dfu_device_t *device )
         uint8_t command[4] = { 0x06, 0x03, 0x00, 0x00 };
 
         if( 4 != dfu_download(device, 4, command) ) {
-            DEBUG( "dfu_download failed.\n" );
+            DEBUG( "dfu_download failed (select flash)\n" );
             return -1;
         }
         DEBUG( "flash selected\n" );
@@ -818,7 +819,7 @@ static int32_t atmel_select_fuses( dfu_device_t *device )
         uint8_t command[4] = { 0x06, 0x03, 0x00, 0x03 };
 
         if( 4 != dfu_download(device, 4, command) ) {
-            DEBUG( "dfu_download failed.\n" );
+            DEBUG( "dfu_download failed (select fuses)\n" );
             return -1;
         }
         DEBUG( "fuses selected\n" );
@@ -836,7 +837,7 @@ static int32_t atmel_select_user( dfu_device_t *device )
         uint8_t command[4] = { 0x06, 0x03, 0x00, 0x06 };
 
         if( 4 != dfu_download(device, 4, command) ) {
-            DEBUG( "dfu_download failed.\n" );
+            DEBUG( "dfu_download failed (select user)\n" );
             return -1;
         }
         DEBUG( "flash selected\n" );
@@ -857,7 +858,7 @@ static int32_t atmel_select_page( dfu_device_t *device,
             command[4] = 0xff & mem_page;
 
             if( 5 != dfu_download(device, 5, command) ) {
-                DEBUG( "dfu_download failed.\n" );
+                DEBUG( "dfu_download failed (select page)\n" );
                 return -1;
             }
         } else if( adc_AVR == device->type ) {
@@ -866,7 +867,7 @@ static int32_t atmel_select_page( dfu_device_t *device,
             command[3] = (char) mem_page;
 
             if( 4 != dfu_download(device, 4, command) ) {
-                DEBUG( "dfu_download failed.\n" );
+                DEBUG( "dfu_download failed (select page)\n" );
                 return -1;
             }
         }
@@ -924,7 +925,7 @@ int32_t atmel_user( dfu_device_t *device,
     /* Select USER page */
     uint8_t command[4] = { 0x06, 0x03, 0x00, 0x06 };
     if( 4 != dfu_download(device, 4, command) ) {
-        DEBUG( "dfu_download failed.\n" );
+        DEBUG( "dfu_download failed (select user)\n" );
         return -2;
     }
     
@@ -966,7 +967,7 @@ int32_t atmel_flash( dfu_device_t *device,
             /* Select FLASH memory */
             uint8_t command[4] = { 0x06, 0x03, 0x00, 0x00 };
             if( 4 != dfu_download(device, 4, command) ) {
-                DEBUG( "dfu_download failed.\n" );
+                DEBUG( "dfu_download failed (select flash)\n" );
                 return -2;
             }
         }
@@ -1214,7 +1215,7 @@ static int32_t atmel_flash_block( dfu_device_t *device,
 
             dfu_clear_status( device );
         } else {
-            DEBUG( "dfu_download failed. %d\n", result );
+            DEBUG( "dfu_download failed (flash block) %d\n", result );
         }
         return -2;
     }
