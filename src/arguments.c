@@ -138,6 +138,7 @@ static struct target_mapping_structure target_map[] = {
     { "atxmega64a4u",   tar_atxmega64a4u,   adc_AVR32, 0x2FE4, 0x03eb, 0x10000, 0x1000, true,  128, true,  false, 32,  0x0800 },
     { "atxmega128a4u",  tar_atxmega128a4u,  adc_AVR32, 0x2FE4, 0x03eb, 0x20000, 0x2000, true,  128, true,  false, 32,  0x0800 },
     { "atxmega128b1",   tar_atxmega128b1,   adc_AVR32, 0x2FEA, 0x03eb, 0x20000, 0x2000, true,  128, true,  false, 32,  0x0800 }, /* Tested */
+    { "atxmega256a3bu", tar_atxmega256a3bu, adc_AVR32, 0x2FE2, 0x03eb, 0x40000, 0x2000, true,  256, true,  false, 32,  0x1000 },
     { NULL }
 };
 
