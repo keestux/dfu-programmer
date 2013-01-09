@@ -37,3 +37,9 @@ void dfu_debug( const char *file, const char *function, const int line,
         va_end( va_arg );
     }
 }
+/*
+** Local Variables:
+**      c-basic-offset: 4
+**      indent-tabs-mode nil
+** End:
+*/

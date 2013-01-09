@@ -1254,3 +1254,9 @@ void atmel_print_device_info( FILE *stream, atmel_device_info_t *info )
     fprintf( stream, "%18s: 0x%04x - %d\n", "Product Revision", info->productRevision, info->productRevision );
     fprintf( stream, "%18s: 0x%04x - %d\n", "HWB", info->hsb, info->hsb );
 }
+/*
+** Local Variables:
+**      c-basic-offset: 4
+**      indent-tabs-mode nil
+** End:
+*/

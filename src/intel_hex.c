@@ -308,3 +308,9 @@ error:
 
     return memory;
 }
+/*
+** Local Variables:
+**      c-basic-offset: 4
+**      indent-tabs-mode nil
+** End:
+*/

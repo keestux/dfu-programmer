@@ -727,3 +727,9 @@ int32_t execute_command( dfu_device_t *device,
 
     return -1;
 }
+/*
+** Local Variables:
+**      c-basic-offset: 4
+**      indent-tabs-mode nil
+** End:
+*/

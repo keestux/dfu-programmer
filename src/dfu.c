@@ -946,3 +946,9 @@ static void dfu_msg_response_output( const char *function, const int32_t result 
         DEBUG( "%s 0x%08x (%d)\n", msg, result, result );
     }
 }
+/*
+** Local Variables:
+**      c-basic-offset: 4
+**      indent-tabs-mode nil
+** End:
+*/
